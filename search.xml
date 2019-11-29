@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Java Design & Learn Summary in 2019/11]]></title>
+    <url>%2F2019%2F11%2F29%2F11-29%2F</url>
+    <content type="text"><![CDATA[Java Design &amp; Learn Summary in 2019/11 This month,I major in rebuild old codes; KEYWORD: JAVA8 LAMBDA NGINX CONFIG BOSCH HUAYU STEERING SYSTEM PRODUCT LINE MES PLC FITS DATEBASE RABBITMQ HIGH EFFECTION WAITING… wating more… #Java Design &amp; Learn Summary in 2019/11 ✿SUMMARY This month,I major in rebuild old codes; KEYWORD: JAVA8 LAMBDA NGINX CONFIG BOSCH HUAYU STEERING SYSTEM PRODUCT LINE MES PLC FITS DATEBASE RABBITMQ HIGH EFFECTION WAITING… ✿FILE STREAM/CSVCSV INPUT/OUTPUT123456789101112131415161718192021222324 @GetMapping("/schedule/export")public ServerResponse exportTask(@RequestParam(value = "table", defaultValue = "Planed") String table, @RequestParam(value = "serialNumber", defaultValue = "5495b1a5-1384-44a0-ac29-4a4c27755680") String serialNumber, @RequestParam(value = "from", defaultValue = "-1") long date, @RequestParam(value = "days", defaultValue = "15") int days, HttpServletResponse response) &#123; try &#123; if (date &lt; 0) date = DateUtils.StartOfToday(); //生成文件名 String today = new SimpleDateFormat("-yyyy-MM-dd").format(DateUtils.StartOfToday()); String prefix = table.concat(today); //写入csv File file =taskScheduleService.writeToCSV(table,date,days,serialNumber,File.createTempFile(prefix, ".csv")); FileInputStream fileInputStream = new FileInputStream(file); response.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(prefix.concat(".csv"), "UTF-8") + "\""); FileCopyUtils.copy(fileInputStream, response.getOutputStream()); return ServerResponse.createBySuccess("文件下载成功！"); &#125; catch (IOException e) &#123; logger.error(String.format("%s表下载异常 %s：%s ", table, e.getMessage())); return ServerResponse.createByErrorMessage(String.format("%s表下载异常 %s：%s ", table, e.getMessage())); &#125;&#125; 其中，在service层写入具体的文件格式12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152@Overridepublic File writeToCSV(String table, long date, int days, String SN, File tempFile) &#123; SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); CSVWriter writer = CSVWriter.open(tempFile); long end = date + days * org.apache.commons.lang3.time.DateUtils.MILLIS_PER_DAY; try &#123; //写入内容 if (table.equals("Planed")) &#123; //加入首行 List&lt;String&gt; dates = taskScheduleMapper.selectDistinctDate(date, end, SN); List&lt;String&gt; dateRow = new ArrayList&lt;&gt;(); dateRow.add("Planed"); dates.forEach(a -&gt; dateRow.add(sdf.format(Long.parseLong(a)))); writer.title(dateRow); Set&lt;String&gt; modelCodes = new HashSet&lt;&gt;(); modelService.getAll().stream().forEach(a-&gt;modelCodes.add(a.getCode())); for (String modelCode : modelCodes) &#123; List&lt;Integer&gt; planeds = new ArrayList&lt;&gt;(); for (String dateStr : dates) &#123; Integer taskPlaned = taskScheduleMapper.selectByModelIdAndDateAndSN(modelCode, dateStr, SN); int planed = taskPlaned == null ? 0 : taskPlaned; planeds.add(planed); &#125; writer.write(Arrays.asList(modelCode, StringUtils.join(planeds, ','))); &#125; &#125; else &#123; //加入首行 List&lt;String&gt; dates = taskScheduleMapper.selectDistinctDateNoSN(date, end); List&lt;String&gt; dateRow = new ArrayList&lt;&gt;(); dateRow.add("Completed"); dates.forEach(a -&gt; dateRow.add(sdf.format(Long.parseLong(a)))); writer.title(dateRow); Set&lt;String&gt; modelCodes = new HashSet&lt;&gt;(); modelService.getAll().stream().forEach(a-&gt;modelCodes.add(a.getCode())); for (String modelCode : modelCodes) &#123; List&lt;Integer&gt; completes = new ArrayList&lt;&gt;(); for (String dateStr : dates) &#123; Integer taskComplete = taskScheduleMapper.selectByModelIdAndDate(modelCode, dateStr); int complete = taskComplete == null ? 0 : taskComplete; completes.add(complete); &#125; writer.write(Arrays.asList(modelCode, StringUtils.join(completes, ','))); &#125; &#125; writer.close(); &#125; catch (Exception e) &#123; logger.error(String.format(e.getMessage())); &#125; return tempFile;&#125; ✿PSY REBUILDRESTRUCT WX GETTIME API注重代码质量，代码复用以及模块化和可复用性 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253/** * 小程序获取可用时间 * TODO WX获取可用时间 * @return */ @GetMapping("/getTimeFromWX") public RestResponse&lt;?&gt; availTimeWXList(@RequestBody Map&lt;String, Object&gt; body) &#123; if (!new Verifier() .rule("roomId") .rule("beginDate")//当天零点 .rule("endDate")//后一天零点 .rule("weekDays")//0周日，1-6周X .rule("reservationTimes") .result((r, s) -&gt; &#123; &#125;).verify(body) ) &#123; return RestResponse.bad(-1, "invalid request body"); &#125; String roomId = (String) body.get("roomId"); long beginDate = (long) body.get("beginDate"); long endDate = (long) body.get("endDate"); List&lt;Integer&gt; weekDays = (List&lt;Integer&gt;) body.get("weekDays"); //获取申请的预约时间段 List&lt;Period&gt; resPeriod = getPeriods(body); //初始化变量 Map&lt;Long, Map&lt;String, List&lt;Period&gt;&gt;&gt; res = new HashMap&lt;&gt;(); List&lt;Long&gt; dates = new ArrayList&lt;&gt;(); //单次预约 if (beginDate == endDate) &#123; dates.add(beginDate); &#125; //多次预约 else &#123; dates = reservationService.getAllDateBetween(beginDate, endDate, weekDays); &#125; for (Long date : dates) &#123; //调用service方法获取各种时间段 List&lt;Period&gt; availableTimes = reservationService.getAvailableTimes(date / 1000, roomId); List&lt;Period&gt; occupyTimes = reservationService.getOccupyTimes(date / 1000, roomId); TimeUtil.convertToMS(availableTimes); TimeUtil.convertToMS(occupyTimes); List&lt;Period&gt; conflictTimes = reservationService.getConflictTimes(resPeriod, occupyTimes); Map&lt;String, List&lt;Period&gt;&gt; map = new HashMap&lt;&gt;(); map.put("avail", availableTimes);//可用 map.put("occupy", occupyTimes);//占用 map.put("conflict", conflictTimes);//冲突 res.put(date, map); &#125; return RestResponse.good(res); &#125; 1234567891011121314151617181920/** * 获取某房间当天占用时间 * date:ms级13位 */@Overridepublic List&lt;Period&gt; getOccupyTimes(long date, String roomId) &#123; List&lt;Period&gt; occupyTimes = new ArrayList&lt;&gt;(); List&lt;String&gt; states = Arrays.asList(Consts.States.PASSED, Consts.States.USING, Consts.States.OVERED); //取得该房间所有状态的预约 List&lt;Reservation&gt; allReservations = reservationRepository.findAllByStateInAndRoomIdEqualsAndIsRemovedFalse(states, roomId); //取出当天预约过滤并加入OccupyTimes allReservations.forEach(reservation -&gt; &#123; List&lt;Period&gt; collect = reservation.getReservationTimes() .stream() .filter(period -&gt; period.getBeginTime() &gt; date &amp;&amp; period.getEndTime() &lt; date + DateUtils.MILLIS_PER_DAY / 1000) .collect(Collectors.toList()); occupyTimes.addAll(collect); &#125;); return occupyTimes;&#125; 1234567891011121314151617181920212223242526/** * 获取某房间当天冲突时间 * 比较预约时段和占用时段 */ @Override public List&lt;Period&gt; getConflictTimes(List&lt;Period&gt; resPeriod, List&lt;Period&gt; occupyTimes) &#123; List&lt;Period&gt; conflictTimes = new ArrayList&lt;&gt;(); //冲突情况 for (Period a : resPeriod) &#123; for (Period b : occupyTimes) &#123; if (a.getBeginTime() &lt; b.getBeginTime() &amp;&amp; a.getEndTime() &lt; b.getEndTime()) &#123; conflictTimes.add(new Period(b.getBeginTime(), a.getEndTime())); &#125; if (a.getBeginTime() &lt; b.getBeginTime() &amp;&amp; a.getEndTime() &gt; b.getEndTime()) &#123; conflictTimes.add(new Period(b.getBeginTime(), b.getEndTime())); &#125; if (a.getBeginTime() &gt;= b.getBeginTime() &amp;&amp; a.getEndTime() &lt;= b.getEndTime()) &#123; conflictTimes.add(new Period(a.getBeginTime(), a.getEndTime())); &#125; if (a.getBeginTime() &gt;= b.getBeginTime() &amp;&amp; a.getBeginTime() &lt; b.getEndTime() &amp;&amp; a.getEndTime() &gt; b.getEndTime()) &#123; conflictTimes.add(new Period(a.getBeginTime(), b.getEndTime())); &#125; &#125; &#125; return conflictTimes; &#125; 123456789101112131415161718192021222324252627282930313233/** * 获取俩个时间段之间周几 * @param beginDate * @param endDate * @param weekDays * @return */@Overridepublic List&lt;Long&gt; getAllDateBetween(long beginDate, long endDate, List&lt;Integer&gt; weekDays) &#123; List&lt;Long&gt; dates = new ArrayList&lt;&gt;(); for (Integer day : weekDays) &#123; Calendar cal = Calendar.getInstance(); cal.setTimeInMillis(beginDate); while (cal.getTimeInMillis() &lt; endDate) &#123; if ((cal.get(Calendar.DAY_OF_WEEK)) == day + 1) &#123; dates.add(cal.getTimeInMillis()); &#125; cal.add(Calendar.DATE, 1);//DATE=日,往后推一天 &#125; &#125; return dates;&#125; /** * 将s转换为ms 13位时间戳 * @param availableTimes */public static void convertToMS(List&lt;Period&gt; availableTimes) &#123; availableTimes.forEach(p -&gt; &#123; p.setBeginTime(p.getBeginTime() * 1000); p.setEndTime(p.getEndTime() * 1000); &#125;);&#125;]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>summary</tag>
+        <tag>code</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java Design & Learn Summary in 2019/10]]></title>
+    <url>%2F2019%2F10%2F23%2F10-23%2F</url>
+    <content type="text"><![CDATA[Java Design &amp; Learn Summary in 2019/10 wating more… #Java Design &amp; Learn Summary in 2019/10 ✿BIO / NIOBIO (Blocking I/O):同步阻塞I/O模式，数据的读取写入必须阻塞在一个线程内等待其完成。在活动连接数不是特别高（小于单机1000）的情况下，这种模型是比较不错的，可以让每一个连接专注于自己的 I/O 并且编程模型简单，也不用过多考虑系统的过载、限流等问题。线程池本身就是一个天然的漏斗，可以缓冲一些系统处理不了的连接或请求。但是，当面对十万甚至百万级连接的时候，传统的 BIO 模型是无能为力的。因此，我们需要一种更高效的 I/O 处理模型来应对更高的并发量。 NIO (New I/O):NIO是一种同步非阻塞的I/O模型，在Java 1.4 中引入了NIO框架，对应 java.nio 包，提供了 Channel , Selector，Buffer等抽象。NIO中的N可以理解为Non-blocking，不单纯是New。它支持面向缓冲的，基于通道的I/O操作方法。 NIO提供了与传统BIO模型中的 Socket 和 ServerSocket 相对应的 SocketChannel 和 ServerSocketChannel 两种不同的套接字通道实现,两种通道都支持阻塞和非阻塞两种模式。阻塞模式使用就像传统中的支持一样，比较简单，但是性能和可靠性都不好；非阻塞模式正好与之相反。12对于低负载、低并发的应用程序，可以使用同步阻塞I/O来提升开发速率和更好的维护性；对于高负载、高并发的（网络）应用，应使用 NIO 的非阻塞模式来开发 AIO (Asynchronous I/O):AIO 也就是 NIO 2。在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的IO模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。AIO 是异步IO的缩写，虽然 NIO 在网络操作中，提供了非阻塞的方法，但是 NIO 的 IO 行为还是同步的。对于 NIO 来说，我们的业务线程是在 IO 操作准备好时，得到通知，接着就由这个线程自行进行 IO 操作，IO操作本身是同步的。查阅网上相关资料，我发现就目前来说 AIO 的应用还不是很广泛，Netty 之前也尝试使用过 AIO，不过又放弃了。 ✿ @one &amp; @many in mybatis@one//一对一查询123456789101112131415@Results(id = &quot;coSchedule&quot;, value = &#123; @Result(column = &quot;ID&quot;, property = &quot;id&quot;), @Result(column = &quot;MACHINE_ID&quot;, property = &quot;machineId&quot;), @Result(column = &quot;SRC_MODEL&quot;, property = &quot;srcModelId&quot;), @Result(column = &quot;DEST_MODEL&quot;, property = &quot;destModelId&quot;), @Result(column = &quot;SRC_MODEL&quot;, property = &quot;srcModel&quot;, one = @One(select = &quot;com.cloume.fits.dao.ModelMapper.selectById&quot;)), @Result(column = &quot;DEST_MODEL&quot;, property = &quot;destModel&quot;, one = @One(select = &quot;com.cloume.fits.dao.ModelMapper.selectById&quot;)), @Result(column = &quot;BEGIN_TIME&quot;, property = &quot;beginTime&quot;), @Result(column = &quot;END_TIME&quot;, property = &quot;endTime&quot;), @Result(column = &quot;CREATE_TIME&quot;, property = &quot;createTime&quot;), @Result(column = &quot;STATE&quot;, property = &quot;state&quot;), @Result(column = &quot;SERIAL_NUMBER&quot;, property = &quot;serialNumber&quot;)&#125;) @many//一对多查询12345678@Select(&quot;select * from users where user_id=#&#123;id&#125;&quot;)@Results(&#123; @Result(id=true,property=&quot;userId&quot;,column=&quot;user_id&quot;,javaType=Integer.class), @Result(property=&quot;userName&quot;,column=&quot;user_name&quot;,javaType=String.class), @Result(property=&quot;userPwd&quot;,column=&quot;user_pwd&quot;,javaType=String.class), @Result(property=&quot;userType&quot;,column=&quot;user_type&quot;,javaType=Integer.class), @Result(property=&quot;info&quot;,column=&quot;user_id&quot;,many=@Many(select=&quot;com.wode.mapper.UserInfoMapper.findByUser&quot;))&#125;) fake Paging &amp; file Stream12345678910111213141516171819202122232425262728293031323334353637383940414243/** * 获取所有日志文件 * * @return * @throws UnsupportedEncodingException */@GetMapping("/logs")public ServerResponse allLogs(@RequestParam(value = "begin", defaultValue = "0") int begin, @RequestParam(value = "size", defaultValue = "20") Integer size) &#123; String Message = null; //获取日志目录 try &#123; String basePath = new File("").getCanonicalPath().concat("\\logs"); //获取所有日志文件名，反转后按时间最近排序 List&lt;String&gt; files = new ArrayList&lt;&gt;(); List&lt;String&gt; directory = FileUtil.getDirectory(new File(basePath), files); Collections.reverse(directory); //返回分页数据 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd"); int today = Integer.parseInt(dateFormat.format(new Date(System.currentTimeMillis()))); //匹配dateTime,找到头索引 int index = 0; if (begin &lt; today) &#123; String dateTimeFile = ""; for (int n = 1; n &lt; directory.size(); n++) &#123; String s = directory.get(n).substring(5, 15); int parseDate = Integer.parseInt(directory.get(n).substring(5, 15).replaceAll("-", "")); if (parseDate &lt;= begin) &#123; dateTimeFile = directory.get(n); break; &#125; &#125; index = directory.indexOf(dateTimeFile); &#125; //判断是否越界并返回结果 int endIndex = (index + size) &gt; directory.size() ? directory.size() : (index + size); List&lt;String&gt; res = new ArrayList&lt;&gt;(directory.subList(index, endIndex)); return ServerResponse.createBySuccess(res); &#125; catch (IOException e) &#123; logger.error(String.format("读取日志文件目录异常:%s", e.getMessage())); &#125; return ServerResponse.createByErrorMessage("获取失败");&#125; 其中，使用了递归遍历文件夹123456789101112131415//递归遍历目录并获取所有文件 public static List&lt;String&gt; getDirectory(File basePath, List&lt;String&gt; files) &#123; File[] fs = basePath.listFiles(); for (File f : fs) &#123; //若是目录，则递归打印该目录下的文件 if (f.isDirectory()) &#123; getDirectory(f,files); &#125; //若是文件，直接打印 if (f.isFile()) &#123; files.add(f.getName()); &#125; &#125; return files; &#125; At last,attach the api of download by File’s name mapping.123456789101112131415161718192021222324252627282930313233343536373839404142434445464748/** * 下载日志文件 * * @param response * @return * @throws UnsupportedEncodingException */ @GetMapping("/logs/&#123;filename&#125;") public String downLoad(HttpServletResponse response, @PathVariable String filename) throws IOException &#123; String Message = null; String filePath = new File("").getCanonicalPath().concat("\\logs"); //截取名称获取所在文件夹 String folder = filename.length() &gt; 10 ? filename.substring(5, 12).concat("/") : ""; File file = new File(filePath + "/" + folder + filename); if (file.exists()) &#123; //设置文件名 response.setCharacterEncoding("UTF-8"); response.setHeader("Content-Disposition", "attachment;fileName=" + java.net.URLEncoder.encode(filename, "UTF-8")); //使用文件流 byte[] buffer = new byte[1024]; FileInputStream fis = null; BufferedInputStream bis = null; OutputStream os = null; try &#123; os = response.getOutputStream(); fis = new FileInputStream(file); bis = new BufferedInputStream(fis); int i = bis.read(buffer); while (i != -1) &#123; os.write(buffer); i = bis.read(buffer); &#125; &#125; catch (Exception e) &#123; logger.error(String.format("日志文件下载异常 %s：%s ", filename, e.getMessage())); &#125; try &#123; bis.close(); fis.close(); &#125; catch (IOException e) &#123; Message = "输入输出流关闭异常"; logger.error(String.format("输入输出流关闭异常:%s", Message)); &#125; return null; &#125; Message = "日志文件不存在!"; logger.error("日志文件不存在!"); return Message; &#125; ✿ equals’s User Guide不能使用一个值为null的引用类型变量来调用非静态方法，否则会抛出异常123456String str = null;if (str.equals("SnailClimb")) &#123;...&#125; else &#123;..&#125; 条件判断语句改为下面这样的话，就不会抛出空指针异常12"SnailClimb".equals(str);// false 不过更推荐使用 java.util.Objects#equals(JDK7 引入的工具类)。1Objects.equals(null,"SnailClimb");// false 来看一下java.util.Objects#equals的源码1234public static boolean equals(Object a, Object b) &#123; // 可以避免空指针异常。如果a==null的话此时a.equals(b)就不会得到执行，避免出现空指针异常。 return (a == b) || (a != null &amp;&amp; a.equals(b));&#125; 注意： Reference:Java中equals方法造成空指针异常的原因及解决方案 每种原始类型都有默认值一样，如 int 默认值为 0，boolean 的默认值为 false,null 是任何引用类型的默认值，不严格的说是所有 Object 类型的默认值。 可以使用 == 或者 != 操作来比较null值，但是不能使用其他算法或者逻辑操作。 在 Java 中 null == null将返回true。 不能使用一个值为null的引用类型变量来调用非静态方法，否则会抛出异常 ✿ float &amp; BigDecimal浮点与定点 定点数表达法的缺点在于其形式过于僵硬，固定的小数点位置决定了固定位数的整数部分和小数部分，不利于同时表达特别大的数或者特别小的数。最终，绝大多数现代的计算机系统采纳了所谓的浮点数表达方式。 什么是定点数呢？ 这两个词中的‘点’也就是常说的小数点。定点数就是计算机在表示数字时，小数点的位置是固定的。 比如计算机用2字节二进制数来表示数字，它怎么表示呢？ （这里只是演示概念） 2个字节有16位， 把前8位用来表示整数部分，后8位用来表示小数部分，也就是说小数点定在了第8位，当然具体定在多少位是可以设置的。用这种方式表示数字8.5时就是这样： 00001000.00001001 这样子，2字节的二进制只能表达2^8 =256个小数而且范围有限（0 - 2^8），很多时候会浪费空间。 为什么浮点数计算时会有精度丢失？先看个实例12345float a = 1.0f - 0.9f;float b = 0.9f - 0.8f;System.out.println(a);// 0.100000024System.out.println(b);// 0.099999964System.out.println(a == b);// false 用浮点数来表示 5.2 ，整数部分是 101，小数部分是0.2，用二进制表示就是 0.2 * 2 = 0.4 0 0.4*2 = 0.8 0 0.8*2 = 1.6 1 0.6*2 = 1.2 1 0.2*2 = 0.4 0 出来的结果就是 101.001100110011（这里是无限循环，暂时只截取一部分） 除了表达范围的问题，很多小数在用二进制表达的时候会出现无限循环的情况。就像文章最上面的0.2，上面已经推导过，0.2得到的就是0.001100110011·····， 当后面的重复循环长度超过了计算机所能表达的范围时，它就会被截断。也就是说 &gt;&gt;&gt; 0.4 + 0.2 0.6000000000000001 &gt;&gt;&gt; BigDecimal 计算为什么不丢失精度？ （精度丢失），我们如何解决这个问题呢？一种很常用的方法是：使用使用 BigDecimal 123456BigDecimal a = new BigDecimal("1.0");BigDecimal b = new BigDecimal("0.9");BigDecimal c = new BigDecimal("0.8");BigDecimal x = a.subtract(b);// 0.1BigDecimal y = b.subtract(c);// 0.1System.out.println(x.equals(y));// true 实际上BigDecimal 也是会丢失长度的，只不过它能范围实在太大了，一般的计算很难触及到他的边界。]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>summary</tag>
+        <tag>code</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Tools && Tricks]]></title>
+    <url>%2F2019%2F04%2F11%2F4-14%2F</url>
+    <content type="text"><![CDATA[小工具，小技巧 持续更新 Git操作指南 git操作速查]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>小工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[浅谈前后端分离及RESTful API]]></title>
+    <url>%2F2019%2F04%2F11%2F4-11%2F</url>
+    <content type="text"><![CDATA[前后端分离，就是前端代码和后端代码切割开来，由两批不同的人来开发，他们只通过某个通道建立联系，这个通道就是“数据传输”。现阶段，前端工程化开发逐渐完善并且成为前端开发主流，Vue、React、Angular等大前端框架让开发者眼前一新，甚至之前想都不敢想的JS也可以基于Node生态，用来进行服务端开发。 一、为什么使用前后端分离 前后端分离的潮流与多端应用的开发密不可分。PC端，pad端，移动端App（安卓/IOS）的发展，使得前后端一体的开发模式十分笨重。 基于Vue、React、Angular的SPA单页应用流行，也助力了前后端分离的趋势。 在之前的前后端一体的开发中，前端人员和后端人员的开发职责和界限不清楚，他们要想完成整个开发必须相互渗透对方的技术栈，这就导致了很多小公司，前后端一个人来做，最后界面一塌糊涂，毫无用户体验。就比如PHP和JAVA的template比较复杂，会嵌入很多后端的语法，如果进行html重构，就会显得非常复杂。 在前后端一体的开发中，开发效率相对低下，前后端人员需要相互等待，更多的情况下，前端工程师会一直配合后端，使得他们能做的事情非常有限，只是源源不断提供静态的html 后台开发语言和模板语言高度耦合，导致开发语言严重依赖。（如Python到JAVA的重构） 二、前后端分离的缺点 做前后端分离，学习门槛会增加。对于前端开发人员来说，以前很多后端来完成的事情，如模板语法，依据数据的显示全部交由前端处理，无论是用户体验还是数据交互，前端工程师必须进行精心地设计。在前端工程化的项目中，路由，性能优化，懒加载等等显得更为重要。 数据依赖导致文档的重要性增加。在以往的前后端一体的开发模式中，后端开发人员是不需要太多考虑各项数据交互的字段和接口怎么定义，也不需要特别清楚地去记录各个接口。但在前后端分离的开发中，接口文档是必须的，它直接影响了前端开发的效率以及准确度。 前端工程师的工作量明显增加。这也就是为什么在大前端时代，前端工程师会崛起，薪资会增加的原因！ SEO的难度增大。因为如果使用前后端分离的模式，就意味着，所有的数据交互采用的是Ajax或者通过网络请求，一般的爬虫我们可以使用urllib或者Scrapy或者Request，使用request爬取的时候只能爬取到源码，无法爬取到数据。SSR也就体现的尤为重要。 后端开发者模式迁移的成本增加 三、什么是RESTful API一句话：RESTful API是目前前后端分离的最佳实践，它是一套标准，一个规范，而不是一个框架。 标准对于开发者来说是十分重要的，就像HTTP、HTML这些都是标准。 在前后端分离的时候，我们会设计API，如果我们在设计的时候依据RESTful准则，那么这套API这可以称作RESTful API。 RESTful API轻量，直接通过http或者https，不需要额外的协议，一般有四种常用操作post/get/put/delete RESTful API面向资源，一目了然，具有自解释性 RESTful API数据的描述十分简单，基于Json或XML的数据格式进行数据传输 REST本质上是使用URL来访问资源种方式。众所周知，URL就是我们平常使用的请求地址了，其中包括两部分：请求方式与请求路径，比较常见的请求方式是GET与POST，但在REST中又提出了几种其它类型的请求方式，汇总起来有六种：GET、POST、PUT、DELETE、HEAD、OPTIONS。尤其是前四种，正好与CRUD（Create-Retrieve-Update-Delete，增删改查）四种操作相对应，例如，GET（查）、POST（增）、PUT（改）、DELETE（删），这正是REST与CRUD的异曲同工之妙！需要强调的是，REST是“面向资源”的，这里提到的资源，实际上就是我们常说的领域对象，在系统设计过程中，我们经常通过领域对象来进行数据建模。 REST是一个“无状态”的架构模式，因为在任何时候都可以由客户端发出请求到服务端，最终返回自己想要的数据，当前请求不会受到上次请求的影响。也就是说，服务端将内部资源发布REST服务，客户端通过URL来访问这些资源，这不就是SOA所提倡的“面向服务”的思想吗？所以，REST也被人们看做是一种“轻量级”的SOA实现技术，因此在企业级应用与互联网应用中都得到了广泛应用。 再谈几个概念： 1.资源（Resources）REST的名称”表现层状态转化”中，省略了主语。”表现层”其实指的是”资源”（Resources）的”表现层”。 所谓”资源”，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。你可以用一个URI（统一资源定位符）指向它，每种资源对应一个特定的URI。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符。 所谓”上网”，就是与互联网上一系列的”资源”互动，调用它的URI。 2.表现层（Representation）“资源”是一种信息实体，它可以有多种外在表现形式。我们把”资源”具体呈现出来的形式，叫做它的”表现层”。 比如，文本可以用txt格式表现，也可以用HTML格式、XML格式、JSON格式表现，甚至可以采用二进制格式；图片可以用JPG格式表现，也可以用PNG格式表现。 URI只代表资源的实体，不代表它的形式。严格地说，有些网址最后的”.html”后缀名是不必要的，因为这个后缀名表示格式，属于”表现层”范畴，而URI应该只代表”资源”的位置。它的具体表现形式，应该在HTTP请求的头信息中用Accept和Content-Type字段指定，这两个字段才是对”表现层”的描述。 3.状态转化（State Transfer）访问一个网站，就代表了客户端和服务器的一个互动过程。在这个过程中，势必涉及到数据和状态的变化。 互联网通信协议HTTP协议，是一个无状态协议。这意味着，所有的状态都保存在服务器端。因此，如果客户端想要操作服务器，必须通过某种手段，让服务器端发生”状态转化”（State Transfer）。而这种转化是建立在表现层之上的，所以就是”表现层状态转化”。 客户端用到的手段，只能是HTTP协议。具体来说，就是HTTP协议里面，四个表示操作方式的动词：GET、POST、PUT、DELETE。它们分别对应四种基本操作：GET用来获取资源，POST用来新建资源（也可以用于更新资源），PUT用来更新资源，DELETE用来删除资源。 综合上面的解释，我们总结一下什么是RESTful架构： （1）每一个URI代表一种资源； （2）客户端和服务器之间，传递这种资源的某种表现层； （3）客户端通过四个HTTP动词，对服务器端资源进行操作，实现”表现层状态转化”。 四、如何前后端分离？怎么做前后端分离？大方向就是 后端专注于：后端控制层（Restful API） &amp; 服务层 &amp; 数据访问层； 前端专注于：前端控制层（Nodejs） &amp; 视图层 本人认为的前后端分离模式应该是这样，当然这不一定正确： 1、项目设计阶段，前后端架构负责人将项目整体进行分析，讨论并确定API风格、职责分配、开发协助模式，确定人员配备；设计确定后，前后端人员共同制定开发接口。 2、项目开发阶段，前后端分离是各自分工，协同敏捷开发，后端提供Restful API，并给出详细文档说明，前端人员进行页面渲染前台的任务是发送API请(GET,PUT,POST,DELETE等)获取数据（json，xml）后渲染页面。 3、项目测试阶段，API完成之前，前端人员会使用mock server进行模拟测试，后端人员采用junit进行API单元测试，不用互相等待；API完成之后，前后端再对接测试一下就可以了，当然并不是所有的接口都可以提前定义，有一些是在开发过程中进行调整的。 4、项目部署阶段，利用nginx 做反向代理，即Java + nodejs + nginx 方式进行。 五、阮大神RESTful API讲解链接http://www.ruanyifeng.com/blog/2011/09/restful.html http://www.ruanyifeng.com/blog/2014/05/restful_api.html 从经典的JSP+Servlet+JavaBean的MVC时代，到SSM（Spring + SpringMVC + Mybatis）和SSH（Spring + Struts + Hibernate）的Java 框架时代，再到前端框架（KnockoutJS、AngularJS、vueJS、ReactJS）为主的MV*时代，然后是Nodejs引领的全栈时代，技术和架构一直都在进步。虽然“基于NodeJS的全栈式开发”模式很让人兴奋，但是把基于Node的全栈开发变成一个稳定，让大家都能接受的东西还有很多路要走。创新之路不会止步，无论是前后端分离模式还是其他模式，都是为了更方便得解决需求，但它们都只是一个“中转站”。走过的“中转站”可能越来越多，但是不要渐行渐远才是。 转自原文：https://blog.csdn.net/qq_41000891/article/details/84071909]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>前后端</tag>
+        <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[七里香-周董]]></title>
+    <url>%2F2019%2F04%2F09%2F4-9%2F</url>
+    <content type="text"><![CDATA[《七里香》，是一首中国风味的诗意情歌，曲调自由清新，曾荣获全球华语音乐榜中榜年度最佳歌曲等多项大奖，现在听起来有种时过境迁后的怀念。 吉他solo 卡农背后的故事 七里香」植物名，属芸香料，月橘属，常绿小灌木。其分枝多，叶互生，花白，有强烈香气。相传距其七华里香味仍可闻，故名之为「七里香」。 窗外的麻雀 在电线杆上多嘴 你说这一句 很有夏天的感觉 手中的铅笔 在纸上来来回回 我用几行字形容你是我的谁 秋刀鱼的滋味 猫跟你都想了解 初恋的香味 就这样被我们寻回 那温暖的阳光 像刚摘的鲜艳草莓 你说你舍不得吃掉这一种感觉 雨下整夜 我的爱溢出就像雨水 院子落叶 跟我的思念厚厚一叠 几句是非 也无法将我的热情冷却 你出现在我诗的每一页 雨下整夜 我的爱溢出就像雨水 窗台蝴蝶 像诗里纷飞的美丽章节 我接着写 把永远爱你写进诗的结尾 你是我唯一想要的了解 那饱满的稻穗 幸福了这个季节 而你的脸颊像田里熟透的番茄 你突然对我说 七里香的名字很美 我此刻却只想亲吻你倔强的嘴 整夜 我的爱溢出就像雨水 窗台蝴蝶 像诗里纷飞的美丽章节 我接着写 把永远爱你写进诗的结尾 你是我唯一想要的了解 吉他谱下面这是卢家宏编配的指弹谱：]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>吉他</tag>
+        <tag>音乐</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[夜的钢琴曲]]></title>
+    <url>%2F2019%2F04%2F03%2F4-3%2F</url>
+    <content type="text"><![CDATA[石进首页：https://www.xiami.com/artist/Kgf6c12d]]></content>
+      <categories>
+        <category>书签</category>
+      </categories>
+      <tags>
+        <tag>书签</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Happy April Fool’s Day！]]></title>
+    <url>%2F2019%2F04%2F01%2F4-1%2F</url>
+    <content type="text"><![CDATA[Happy April Fool’s Day！ 心中的俩块大石终于落下了 魔都之旅 三人行 魔都 华师中北的理科楼 明珠点缀的外滩 城隍庙旁的豫园 郊野外的动物园 南京东路的Apple 世博园里的中华宫 人民广场的上博馆 简笔 一份保底的Offer 三年五万研究生证 可以不够瑰丽但要基石坚稳 但愿你一步一步走下去再赴三年之约]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>考研</tag>
+        <tag>旅程</tag>
+        <tag>规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[准备复试]]></title>
+    <url>%2F2019%2F03%2F26%2F3.26%2F</url>
+    <content type="text"><![CDATA[突围模式 英语面试常见问题 introduce yourself introduce your family what you have done in the past year what’s your favourite project what about HangZhou introduce your home town introduce your university what’s the different between HangZhou and your hometown why did you chose ZJU why do you want want to get a master’s degree what are you plan to in postgraduate 浅谈MyBatis和Hibernate两者的特点及对比MyBatis和Hibernate有一些共同点，都为持久层框架。但Hibernate可以说是比较老旧的框架，这样讲的原因是虽然Hibernate有比较好的可移植性，而且对JDBC有较好的封装，便于使用SQL进行操作，但由于MySQL数据库只适用于中小企业，所以Hibernate的使用就有一定的局限性；相比于Hibernate，MyBatis对JDBC的封装程度没那么深，对开发人员的要求较高，但对大型数据库的优化和适配性较强，所以适用于处理大量数据。MyBatis和Hibernate两者的特点及对比，具体的不同可见如下： 首先从开发速度来比较，Mybatis其实要比Hibernate要更好上手，因为Hibernate是对JDBC的深度封装，而Mybatis就显得更加开放，而且简单易学。这也是Mybatis更加流行的原因，正因为如此，Mybatis的开发社区近年来也开始活跃起来，下载一些支持开发的工具也较为方便；Mybatis也有自己的代码生成工具，可以生成简单基本的DAO层方法，针对高级查询，Mybatis需要手动编写SQL语句，以及ResultMap。而Hibernate有良好的映射机制，开发者无需关心SQL的生成与结果映射，可以把更多的精力放在业务流程上。 在系统调优方面，Hibernate可以制定合理的缓存策略，在延迟加载方面处理得较好，有较为合理的Session管理机制，便于批量抓取，同时有合理的O/R映射设计。Mybatis在调优方面，同样有Session机制和二级缓存，同时还可以对SQL进行优化设计；Hibernate一般是查询数据库的所有字段，如果指定字段查询，程序较为繁琐，而Mybatis的SQL是手动编写的，所以可以按需求指定查询的字段。虽然Hibernate具有自己的日志统计，但同样可以通过Log4j进行日志记录。 在对象管理方面，Hibernate 是完整的对象/关系映射解决方案，对象管理功能比较完善，使开发者不用再关注底层数据库系统的细节。也就是说，相对于常见的 JDBC/SQL 持久层方案中需要管理 SQL 语句，Hibernate采用了更自然的面向对象的视角来持久化 Java 应用中的数据。而MyBatis在这方面没有特定的文档说明，但也便于开发者发挥自身的想法来对对象进行管理。 在缓存机制方面，刚才已经提到过，Hibernate的一级缓存是Session缓存，一级缓存是与Session的生命周期相关的。而它的二级缓存是SessionFactory级的缓存其中可分为内置缓存和外置缓存，其中的内置缓存中存放了关于SessionFactory对象的一些集合属性包含的数据，包括映射元素据及预定SQL语句等；而Mybatis一般也可分为二级缓存，一级缓存是 SqlSession 级别的缓存二级缓存是 mapper 级别的缓存，多个 SqlSession 共享，而它默认状态是开启一级缓存，这样对开发者而言是一种便捷。但也有人指出，Mybatis的缓存机制在一定程度上限制了Mybatis的推广。以上就是对MyBatis和Hibernate两者的特点及对比，当然还有很多方面可以比较，今后会继续与大家分享。]]></content>
+      <categories>
+        <category>考研</category>
+      </categories>
+      <tags>
+        <tag>英语</tag>
+        <tag>复试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[夜空中最亮的星]]></title>
+    <url>%2F2019%2F03%2F24%2F3.24%2F</url>
+    <content type="text"><![CDATA[为你读诗——夜空中最亮的星（英文版） 夜空中最亮的星 If I Stay———-Don’t you ever question why你从不质疑I’m by your side为何我会陪伴在你身边I’m here when you cry你哭泣时我在你身边‘Cause he told you lies so slyly因为他是如此狡猾的对你撒下谎言I run my fingers through your hair我的手指穿过你的秀发And show I care对你表明我多么在乎你But I’m not the one而我却不是你的唯一That your heart belongs to nightly你的心属于璀璨的夜But if I stay would you kiss me但我若留在你身边你会不会与我相吻in the summer rain在夏日细雨中Or let me wash away into the sand还是让我被雨水涤荡混入泥沙Would we lie together underneath我们会一同躺在灼热的the burning sun太阳底下吗And let our two hearts beat as one让我们心心相印If I stay如果我留在你身边would you let me hold you in my arms你会让我拥你入怀吗And later take a walk beneath the stars然后我们一同在夜空下散步Woah, tell me someday this could all be real喔 告诉我某一天这一切都会成真And end this heartache I’m pained to feel结束这让我难熬的心痛———-## 逃跑计划《夜空中最亮的星》是逃跑计划演唱的一首歌，由逃跑计划填词谱曲，收录于逃跑计划2011年发行的首张专辑《世界》中，同时还是微电影《摘星的你》主题曲。在创作《夜空中最亮的星》的时候，毛川觉得世界上没有真正的坦诚，事实本身在于是否主观愿意相信。如果爱一个人，有时候哪怕感觉到对方在说谎，还是会去相信。这个观点被写进歌里，撞进了不少歌迷的耳朵：“给我再去相信的勇气，越过谎言去拥抱你。” ———————-转自TeacherGwen，侵删]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>鸡汤</tag>
+        <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[断片是这样的感觉]]></title>
+    <url>%2F2019%2F03%2F23%2F3.23%2F</url>
+    <content type="text"><![CDATA[第一次喝断片，满嘴的麻烦了。。还被某密笑话-。- 三个人俩瓶四特我没想过我是贪杯的人，但是我也是想测试一下我的上限，结果喝过头了，实属不该，酒这个东西，不逞能，到量就停否则给自己带来麻烦，也给别人带来麻烦 炳哥与昊哥虽然不是第一次陪学长学姐了，但是每次都还是能从他们的言谈举止中，在思维层面获得一些进步和拓展 以发展的眼光，保持初心，谋定后动，稳扎稳打，不要只顾眼前，留下一颗创业的种子，年轻就应该有追求，资源的互帮互助，这些是我们在酒桌谈的最多的 麻烦和感动第一次喝醉的不省人事，全程受到同学们的照顾，醉酒后一直说的是对不起，给你们添麻烦了 想想能在校园里遇到这么一群人，愿意去照顾你，真的是很难得的事情，毕竟不是谁都能忍受你身上的酒味，帮你倒热水，解衣服，背你上床，帮你处理呕吐物。真的是很感动了，有些细节就是这么润物细无声的，人，应该常怀一颗感恩之心 最后还是要夸一下我的好妹妹了有时候会觉得，遇到一些人，进行了进一步的交流，搭建了关系，培养了感情，很多时候真的能超预期的给你带来惊喜 密密就是这样一个典型，我觉得这是一件很值得去炫耀的事情，hh，虽然密密是个话痨，也有很多不足，但是密密真的是个很单纯，善良的女孩子，当然我更不知道她曾经也是个获奖手软的学霸– 可以说小米粥很贴心了，虽然没有吃很多，最后还全部吐出来了，嘻嘻嘻，密密是个好妹妹也是个皮皮密，一边很关心哥哥了，可嘴上还一边嘲笑我，老是给我取绰号，em，这小丫头还是得好好教训一顿，对 找个机会！]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>记录</tag>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[世间最优美的一段旋律-Canon]]></title>
+    <url>%2F2019%2F03%2F21%2F3.21%2F</url>
+    <content type="text"><![CDATA[有人这么评价 卡农的魅力在于 当你幸福时，你能听到忧伤， 当你沉沦时，你能听到希望 Canon and Gigue in D（Johann Pachelbel） Arrang and played by Per-Olov Kindgren 卡农（canon），是一种曲式的名称，是复调音乐的一种。原意为 “规律”。这种曲式的特征是间隔数音节不停重复同一段乐曲, 一个声部的曲调自始至终为另一声部所摹仿，即严格的摹仿对位。卡农出现于13、14世纪，后人常采用古典曲调作为卡农主题。”D大调卡农”，是帕赫贝尔在意大利威尼斯时写的音乐，带有一丝意大利式的，甜蜜宁静的忧伤。在不到五分钟演奏长度里，其中的”顽固音型主题” 反复出现28次，可是听者却能陶醉在这旋律之中，丝毫不会感到单调。 卡农背后的故事帕赫贝尔10几岁的时候流浪到英国，被英国一个小村庄的琴师收养，之后他学会了弹钢琴。有一个旁边小镇上的富人家女孩，叫芭芭拉(Barbara Gabler)，一次她经过教堂听到帕赫贝尔弹得曲子，便爱上了他。 芭芭拉心里喜欢帕赫贝尔，却没有告诉他，她对帕赫贝尔说自己热爱音乐，希望可以拜师学艺，帕赫贝尔很高兴地收下了这个徒弟。芭芭拉因心爱之人而学琴，并没有把精力放在钢琴上，这遭到了帕赫贝尔的责备，”你不适合弹钢琴，也不喜欢钢琴，你走吧。” 芭芭拉听后很沮丧，决心好好弹琴，证明自己可以拿到钢琴第一名。半年过去，她在比赛中拿到了奖，当她拿着奖杯准备向帕赫贝尔表达心意时，他已经离开应征去打仗了。就这样，芭芭拉等候了三年，等来一具别人为了让她死心而运来的尸体，她趴在尸体上哭了三天三夜，三天后的晚上，芭芭拉割腕自杀了。 其实帕尔贝尔并没有死，在他们分别后，帕尔贝尔发现自己也不知不觉爱上了了芭芭拉。他准备为她写首歌作为求婚的礼物，在芭芭拉自杀后的第二个月，帕赫贝尔回到了小镇。他从村民的口中得知芭芭拉为他做的一切后，放声大哭，他坐在钢琴前，弹出了为她而写的卡农”Canon(D Major)”。 很多人质疑卡农背后的故事，它只是虚构了一段美好的夙愿。真实的故事其实是，1681年，帕赫贝尔二十八岁时娶芭芭拉盖布勒（Barbara Gabler）为妻，他们还有了孩子，不过卡农确实是帕赫贝尔写给女儿和妻子的作品。但是，很多人因为这个纯美虚构的故事，对《卡农》有了一层更深的爱。音乐赋予其中的感动和温暖，加上一个故事的升华，相融在一起，让《卡农》成为了每个人心中的经典。 有人说，以后婚礼上会放《卡农》，暮年的葬礼上也会放卡农，因为卡农可以治愈一切。 卡农，是可以听一生的经典。 吉他谱]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>吉他</tag>
+        <tag>古典</tag>
+        <tag>音乐</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【ACM】梵高先生]]></title>
+    <url>%2F2019%2F03%2F20%2F3.20%2F</url>
+    <content type="text"><![CDATA[谁的父亲死了请你告诉我如何悲伤谁的爱人走了请你告诉我如何遗忘 —— 李志《梵高先生》 背景2009年的最后一天，在义乌隔壁酒吧李志为了还做唱片欠下来的20W，巡回35场演出，在这晚完成喝醉了的逼哥哽咽着唱完梵高先生 说最后一次唱这歌他粗鲁的打断了大家的合唱，然后用最沙哑的嗓音唱了起来那天，唯一和他合音的只有一只狗 抬头再看了一眼星空和黑夜，今晚的星星变成了一个三角形的样子，像这样： 11 11 2 11 3 3 11 4 6 4 1… 现在给你一个正整数 n，请你给出星空的前 n 行。 输入格式输入文件共一行，包含一个正整数 n (1≤n≤20)。 输出格式输出文件共 n 行，即星空的前 n 行。每行包含若干正整数，这些正整数之间用一个空格隔开（不能有多余的空格），最后一个正整数后面没有空格。 复杂度 单点时限: 1.0 sec 内存限制: 256 MB 样例input 4 output 1 1 1 1 2 1 1 3 3 1 实现C语言123456789101112131415161718192021#include&lt;stdio.h&gt; using namespace std; int main() &#123; int n,m,a; int sum=0,mm; scanf("%d%d",&amp;n,&amp;m); for(int i=1;i&lt;=n;i++) &#123; mm=0; for(int j=1;j&lt;=m;j++) &#123; scanf("%d",&amp;a); if(a&gt;mm)mm=a; &#125; sum+=mm; &#125; printf("%d\n",sum); return 0; &#125; Java1234567891011121314151617181920 public class Program3528 &#123; public static void main(String[] args) &#123; int a, flag; int sum = 0; Scanner input = new Scanner(System.in); int m = input.nextInt(); int n = input.nextInt(); System.out.println("----------"); for (int i = 1; i &lt;= m; i++) &#123; flag = 0; for (int j = 1; j &lt;= n; j++) &#123; a = input.nextInt(); if (a &gt; flag) flag = a; &#125; sum += flag; &#125; System.out.println(sum); &#125;&#125; —-题目转自华师18研究生入学机试]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>ACM</tag>
+        <tag>数据结构</tag>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【面经】金三银四]]></title>
+    <url>%2F2019%2F03%2F19%2F3.19-2%2F</url>
+    <content type="text"><![CDATA[金三银四，即使说今年大环境不好，技术到家依旧吃香，关键在于你是否真的打牢基础，面”面”俱到。 1.MySql三大引擎是什么 InnoDB（默认）、MyISAM 、Memory InnoDB：磁盘表，支持事务、行级锁，B+Tree索引优点：ACID(原子性、一致性、隔离性、持久性)；适用于高并发，更新操作频繁，需要使用事务，对自动灾难恢复有要求的表缺点：由于支持ACID等安全及其他特性，读写效率相对MyISAM差；占用磁盘空间大 MyISAM：磁盘表，不支持事务，支持表级锁，B+Tree索引优点：占用空间小，处理速度快缺点：不支持事务完整性和并发性 **MEMORY（堆）**：内存表，不支持事务，支持表级锁，Hash索引，不支持Blob，Text大类型优点：速度快，支持临时数据缺点：适用于丢失以后，对项目整体没有影响或者影响不大 2.接口和抽象类的区别 参数 抽象类 接口 默认方法 可以有默认的方法实现 完全抽象的，不存在方法的实现 实现方式 子类使用extends关键字来继承抽象类。如果子类不是抽象类的话，它需要提供抽象类中所有声明的方法的实现。 子类使用implements来实现接口。它需要提供接口中所有声明的方法的实现 构造器 抽象类可以有构造器 接口不能有构造器 与正常Java类的区别 不能实例化抽象类 接口是完全不同的类型 访问修饰符 抽象方法可以有public、protected和default这些修饰符 接口方法默认修饰符是public。不可以使用其它修饰符 main方法 抽象方法可以有main方法并且我们可以运行它 接口没有main方法，因此我们不能运行它。（java8以后接口可以有default和static方法，所以可以运行main方法） 多继承 抽象方法可以继承一个类和实现多个接口 接口只可以继承一个或多个其它接口 速度 它比接口速度要快 接口是稍微有点慢的，因为它需要时间去寻找在类中实现的方法 添加新方法 如果你往抽象类中添加新的方法，你可以给它提供默认的实现。因此你不需要改变你现在的代码。 如果往接口中添加方法，那么你必须改变实现该接口的类 3.NoSql为什么比Sql快 NoSql（Not only sql）是非关系型数据库，因为不需要满足关系型数据库数据一致性等复杂特性所以速度快 Sql是关系型数据库，功能强大，效率上有瓶颈，访问慢 4.String,StringBuffer,StringBuilder的区别，String为何不可变 String是字符串常量，StringBuffer与StringBuilder都是字符串变量 String不可变是因为在JDK中被申明为final终类 StringBuilder效率比StringBuffer，StringBuffer是线程安全会带来额外开销 5.Vector，ArrayList，LinkedList的区别 Vector、ArrayList都是以类似数组的形式存储在内存中LinkedList则是链表 List中元素有序、允许重复Set中元素无序，不允许重复 Vector线程同步，效率相比慢ArrayList与LinkedList线程不同步 LinkedList不适合查找，插入删除方便ArrayList、LinkedList则适合查找，不适合指定位置的插入删除 ArrayList在元素满时自动扩容50%，更节省空间Vector自动扩容100%， 6.HashTable，HashMap，TreeMap的区别 HashTable线程同步、HashMap非线程同步 HashTable不允许 &lt;键，值&gt;为nullHashMap 允许 HashTable 使用Enumeration 枚举（父类）HashMap 使用Iterator 迭代器（父类） HashTable中hash数组的默认大小是11，增长方式为 old*2+1，HashMap 默认大小是16，增长方式为 2的指数倍 TreeMap由红黑树定义，故有序，默认为按键升序排列 7.Get 与 Post 的区别http请求格式：&lt;request line&gt; 包含三个信息： 1.请求类型（GET或POST）；2.访问资源；3.http版本号&lt;header&gt; 服务器要使用的附加信息`&lt;blank line&gt; 空行[&lt;request-body&gt;] 请求的内容数据 区别： Get是从服务器端获取数据，Post是向服务器发送数据 在客户端，Get通过Url提交数据，在地址栏可以看到请求信息，该信息被编码过Post数据则是放在Html header内提交 Get方式，服务器端用Request.QueryString获取变量的值Post方式，服务器端用Request.From获取提交的数据 Get方式提交的数据最多1024字节，而Post则没有限制 Get方式提交的参数及参数值会在地址栏显示，不安全，而Post方式不会，比较安全 8.Session 与 Cookie 的区别 Session 是服务器端的存储空间，由应用服务器维护Cookie 是客户端的存储空间，由浏览器维护 用户可以通过浏览器设置决定是否保存Cookie，而不能决定是否保存Session，因为Session由服务器维护 Session 保存的是对象Cookie 保存的是字符串 Session 和 Cookie 不能跨窗口使用，每打开一个浏览器系统会赋予一个SessionID，此时的SessionID不同若要完成跨浏览器访问数据，可以使用Application Session 和 Cookie 都有失效时间，过期后会自动删除，减小系统开销 9.Java常见数据类型，各自占用多少字节 基本数据类型 字节 位 byte 1 8 short 2 16 int 4 32 long 8 64 float 4 32 double 8 64 char 2 16 boolean 1（默认false） 10.类的实例化顺序 父类静态变量和代码块 子类静态变量和代码块 父类成员变量赋值 父类类构造代码块 父类构造方法 子类构造代码块 子类构造方法 拿到人生第一份Offer，再多尝试下，Make more choices！]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>底层</tag>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【ACM】西班牙馅饼]]></title>
+    <url>%2F2019%2F03%2F19%2F3.19-1%2F</url>
+    <content type="text"><![CDATA[港岛妹妹，你献给我的西班牙馅饼甜蜜地融化了我，天空之城在哭泣港岛妹妹，我们曾拥有的甜蜜的爱情疯狂地撕裂了我，天空之城在哭泣 —— 李志 《天空之城》 背景粉丝问：“我想问一下在你歌词里面的馅饼是什么？” 李志答：“告诉你，西班牙馅饼是怎么一回事。是有一次我一个朋友给我寄了一张明信片，从西班牙寄过来的，明信片的封面是一块馅饼，谢谢你，你惊讶吗？你们惊讶吗？想想啥？你们知道个几把？整天瞎几把猜对不对？挺可笑的。所以答案一公布就这个样子。你再回想一下生活里面有多少个这样的事情，你充满了幻想，充满了好奇，猜哦，瞎几把猜，猜到后面傻逼了吧？没猜到了吧？” 现在我们看见了这个西班牙馅饼长什么样，西班牙馅饼是个矩形形状，想不到吧。我们可以把它抽象成一个 N 行 M 列的正整数矩阵。每个格子有一个“美味值”，由于一些不可告人的原因我们对于这个馅饼没行只能吃一口，港岛妹妹说如果她吃到美味值为 k 的馅饼，就会给我做出美味值为 k 的红烧肉。问红烧肉最多能有多好吃。 输入格式N，M：表示 N 行 M 列，馅饼的尺寸大小。以下 N 行 M 列为馅饼每个格子的美味值。输入中所有数是不超过 100 的正整数。 输出格式一个正整数，表示红烧肉最多能有多好吃。 复杂度 单点时限: 1.0 sec 内存限制: 256 MB 样例input 3 2 8 15 11 4 2 43 output 69 实现C语言123456789101112131415161718192021#include&lt;stdio.h&gt; using namespace std; int main() &#123; int n,m,a; int sum=0,mm; scanf("%d%d",&amp;n,&amp;m); for(int i=1;i&lt;=n;i++) &#123; mm=0; for(int j=1;j&lt;=m;j++) &#123; scanf("%d",&amp;a); if(a&gt;mm)mm=a; &#125; sum+=mm; &#125; printf("%d\n",sum); return 0; &#125; Java1234567891011121314151617181920 public class Program3528 &#123; public static void main(String[] args) &#123; int a, flag; int sum = 0; Scanner input = new Scanner(System.in); int m = input.nextInt(); int n = input.nextInt(); System.out.println("----------"); for (int i = 1; i &lt;= m; i++) &#123; flag = 0; for (int j = 1; j &lt;= n; j++) &#123; a = input.nextInt(); if (a &gt; flag) flag = a; &#125; sum += flag; &#125; System.out.println(sum); &#125;&#125; —-转自华师18研究生入学机试]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>ACM</tag>
+        <tag>Java</tag>
+        <tag>greedy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Go ahead...]]></title>
+    <url>%2F2019%2F03%2F19%2F3.18%2F</url>
+    <content type="text"><![CDATA[夜深了不要艳羡别人的未来，而是努力去追逐你的未来Late at night, don’t admire the future of others, but try to pursue yours. Go ahead…]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>日志</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[这一年...]]></title>
+    <url>%2F2019%2F03%2F18%2F3.17%2F</url>
+    <content type="text"><![CDATA[一战NJU MSE 数学未过线... 政治 65 英语 79 数学 71 842 105 2019校线： 50 50 75 90 320 1$ transfer to working]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>日志</tag>
+        <tag>考研</tag>
+        <tag>心路历程</tag>
+      </tags>
+  </entry>
+</search>

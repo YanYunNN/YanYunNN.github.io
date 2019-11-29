@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/cacda2e4.js","daovoice")
+  daovoice('init', {
+      app_id: "cacda2e4"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  
+
+
+
+
+  <meta name="description" content="Java Design &amp;amp; Learn Summary in 2019/11   This month,I major in rebuild old codes; KEYWORD:    JAVA8 LAMBDA    NGINX CONFIG    BOSCH HUAYU STEERING SYSTEM PRODUCT LINE    MES PLC FITS    DATEBASE">
+<meta name="keywords" content="summary,code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Design &amp; Learn Summary in 2019&#x2F;11">
+<meta property="og:url" content="http://yoursite.com/2019/11/29/11-29/index.html">
+<meta property="og:site_name" content="YanYunNN&#39;s Blog">
+<meta property="og:description" content="Java Design &amp;amp; Learn Summary in 2019/11   This month,I major in rebuild old codes; KEYWORD:    JAVA8 LAMBDA    NGINX CONFIG    BOSCH HUAYU STEERING SYSTEM PRODUCT LINE    MES PLC FITS    DATEBASE">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-29T10:02:42.073Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java Design &amp; Learn Summary in 2019&#x2F;11">
+<meta name="twitter:description" content="Java Design &amp;amp; Learn Summary in 2019/11   This month,I major in rebuild old codes; KEYWORD:    JAVA8 LAMBDA    NGINX CONFIG    BOSCH HUAYU STEERING SYSTEM PRODUCT LINE    MES PLC FITS    DATEBASE">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/29/11-29/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Java Design & Learn Summary in 2019/11 | YanYunNN's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+	
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YanYunNN's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">以梦为马 不负韶华</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>个人</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时间轴</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>外链</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/29/11-29/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YanYunNN">
+      <meta itemprop="description" content="一个自说自述的地方">
+      <meta itemprop="image" content="/images/pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YanYunNN's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java Design & Learn Summary in 2019/11
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-29 17:55:00 / 修改时间：18:02:42" itemprop="dateCreated datePublished" datetime="2019-11-29T17:55:00+08:00">2019-11-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开发/" itemprop="url" rel="index"><span itemprop="name">开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+              
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/11/29/11-29/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2019/11/29/11-29/" itemprop="commentCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Java Design &amp; Learn Summary in 2019/11</p>
+</blockquote>
+<blockquote>
+<p>This month,I major in rebuild old codes;<br> KEYWORD:<br>    JAVA8 LAMBDA<br>    NGINX CONFIG<br>    BOSCH HUAYU STEERING SYSTEM PRODUCT LINE<br>    MES PLC FITS<br>    DATEBASE<br>    RABBITMQ HIGH EFFECTION<br>    WAITING…</p>
+</blockquote>
+<p>wating more…</p>
+<a id="more"></a>
+<p>#Java Design &amp; Learn Summary in 2019/11</p>
+<h2 id="✿SUMMARY"><a href="#✿SUMMARY" class="headerlink" title="✿SUMMARY"></a>✿SUMMARY</h2><p> This month,I major in rebuild old codes;<br> KEYWORD:<br>    JAVA8 LAMBDA<br>    NGINX CONFIG<br>    BOSCH HUAYU STEERING SYSTEM PRODUCT LINE<br>    MES PLC FITS<br>    DATEBASE<br>    RABBITMQ HIGH EFFECTION<br>    WAITING…</p>
+<h2 id="✿FILE-STREAM-CSV"><a href="#✿FILE-STREAM-CSV" class="headerlink" title="✿FILE STREAM/CSV"></a>✿FILE STREAM/CSV</h2><h4 id="CSV-INPUT-OUTPUT"><a href="#CSV-INPUT-OUTPUT" class="headerlink" title="CSV INPUT/OUTPUT"></a>CSV INPUT/OUTPUT</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@GetMapping</span>(<span class="string">"/schedule/export"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ServerResponse <span class="title">exportTask</span><span class="params">(@RequestParam(value = <span class="string">"table"</span>, defaultValue = <span class="string">"Planed"</span>)</span> String table,</span></span><br><span class="line"><span class="function">                                 @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"serialNumber"</span>, defaultValue = <span class="string">"5495b1a5-1384-44a0-ac29-4a4c27755680"</span>)</span> String serialNumber,</span></span><br><span class="line"><span class="function">                                 @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"from"</span>, defaultValue = <span class="string">"-1"</span>)</span> <span class="keyword">long</span> date,</span></span><br><span class="line"><span class="function">                                 @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"days"</span>, defaultValue = <span class="string">"15"</span>)</span> <span class="keyword">int</span> days,</span></span><br><span class="line"><span class="function">                                 HttpServletResponse response) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (date &lt; <span class="number">0</span>) date = DateUtils.StartOfToday();</span><br><span class="line">        <span class="comment">//生成文件名</span></span><br><span class="line">        String today = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"-yyyy-MM-dd"</span>).format(DateUtils.StartOfToday());</span><br><span class="line">        String prefix = table.concat(today);</span><br><span class="line">        <span class="comment">//写入csv</span></span><br><span class="line">        File file =taskScheduleService.writeToCSV(table,date,days,serialNumber,File.createTempFile(prefix, <span class="string">".csv"</span>));</span><br><span class="line"></span><br><span class="line">        FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">        response.setHeader(<span class="string">"Content-disposition"</span>,</span><br><span class="line">                <span class="string">"attachment; filename=\""</span> + URLEncoder.encode(prefix.concat(<span class="string">".csv"</span>), <span class="string">"UTF-8"</span>) + <span class="string">"\""</span>);</span><br><span class="line">        FileCopyUtils.copy(fileInputStream, response.getOutputStream());</span><br><span class="line">        <span class="keyword">return</span> ServerResponse.createBySuccess(<span class="string">"文件下载成功！"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        logger.error(String.format(<span class="string">"%s表下载异常 %s：%s "</span>, table, e.getMessage()));</span><br><span class="line">        <span class="keyword">return</span> ServerResponse.createByErrorMessage(String.format(<span class="string">"%s表下载异常 %s：%s "</span>, table, e.getMessage()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，在service层写入<code>具体的文件格式</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> File <span class="title">writeToCSV</span><span class="params">(String table, <span class="keyword">long</span> date, <span class="keyword">int</span> days, String SN, File tempFile)</span> </span>&#123;</span><br><span class="line">    SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">    CSVWriter writer = CSVWriter.open(tempFile);</span><br><span class="line">    <span class="keyword">long</span> end = date + days * org.apache.commons.lang3.time.DateUtils.MILLIS_PER_DAY;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//写入内容</span></span><br><span class="line">        <span class="keyword">if</span> (table.equals(<span class="string">"Planed"</span>)) &#123;</span><br><span class="line">            <span class="comment">//加入首行</span></span><br><span class="line">            List&lt;String&gt; dates = taskScheduleMapper.selectDistinctDate(date, end, SN);</span><br><span class="line">            List&lt;String&gt; dateRow = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            dateRow.add(<span class="string">"Planed"</span>);</span><br><span class="line">            dates.forEach(a -&gt; dateRow.add(sdf.format(Long.parseLong(a))));</span><br><span class="line">            writer.title(dateRow);</span><br><span class="line"></span><br><span class="line">            Set&lt;String&gt; modelCodes = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">            modelService.getAll().stream().forEach(a-&gt;modelCodes.add(a.getCode()));</span><br><span class="line">            <span class="keyword">for</span> (String modelCode : modelCodes) &#123;</span><br><span class="line">                List&lt;Integer&gt; planeds = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                <span class="keyword">for</span> (String dateStr : dates) &#123;</span><br><span class="line">                    Integer taskPlaned = taskScheduleMapper.selectByModelIdAndDateAndSN(modelCode, dateStr, SN);</span><br><span class="line">                    <span class="keyword">int</span> planed = taskPlaned == <span class="keyword">null</span> ? <span class="number">0</span> : taskPlaned;</span><br><span class="line">                    planeds.add(planed);</span><br><span class="line">                &#125;</span><br><span class="line">                writer.write(Arrays.asList(modelCode, StringUtils.join(planeds, <span class="string">','</span>)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//加入首行</span></span><br><span class="line">            List&lt;String&gt; dates = taskScheduleMapper.selectDistinctDateNoSN(date, end);</span><br><span class="line">            List&lt;String&gt; dateRow = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            dateRow.add(<span class="string">"Completed"</span>);</span><br><span class="line">            dates.forEach(a -&gt; dateRow.add(sdf.format(Long.parseLong(a))));</span><br><span class="line">            writer.title(dateRow);</span><br><span class="line"></span><br><span class="line">            Set&lt;String&gt; modelCodes = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">            modelService.getAll().stream().forEach(a-&gt;modelCodes.add(a.getCode()));</span><br><span class="line">            <span class="keyword">for</span> (String modelCode : modelCodes) &#123;</span><br><span class="line">                List&lt;Integer&gt; completes = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                <span class="keyword">for</span> (String dateStr : dates) &#123;</span><br><span class="line">                    Integer taskComplete = taskScheduleMapper.selectByModelIdAndDate(modelCode, dateStr);</span><br><span class="line">                    <span class="keyword">int</span> complete = taskComplete == <span class="keyword">null</span> ? <span class="number">0</span> : taskComplete;</span><br><span class="line">                    completes.add(complete);</span><br><span class="line">                &#125;</span><br><span class="line">                writer.write(Arrays.asList(modelCode, StringUtils.join(completes, <span class="string">','</span>)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        writer.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(String.format(e.getMessage()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tempFile;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="✿PSY-REBUILD"><a href="#✿PSY-REBUILD" class="headerlink" title="✿PSY REBUILD"></a>✿PSY REBUILD</h2><h4 id="RESTRUCT-WX-GETTIME-API"><a href="#RESTRUCT-WX-GETTIME-API" class="headerlink" title="RESTRUCT WX GETTIME API"></a>RESTRUCT WX GETTIME API</h4><pre><code>注重代码质量，代码复用以及模块化和可复用性
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 小程序获取可用时间</span></span><br><span class="line"><span class="comment">     * TODO WX获取可用时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/getTimeFromWX"</span>)</span><br><span class="line">    <span class="keyword">public</span> RestResponse&lt;?&gt; availTimeWXList(<span class="meta">@RequestBody</span> Map&lt;String, Object&gt; body) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">new</span> Verifier()</span><br><span class="line">                .rule(<span class="string">"roomId"</span>)</span><br><span class="line">                .rule(<span class="string">"beginDate"</span>)<span class="comment">//当天零点</span></span><br><span class="line">                .rule(<span class="string">"endDate"</span>)<span class="comment">//后一天零点</span></span><br><span class="line">                .rule(<span class="string">"weekDays"</span>)<span class="comment">//0周日，1-6周X</span></span><br><span class="line">                .rule(<span class="string">"reservationTimes"</span>)</span><br><span class="line">                .result((r, s) -&gt; &#123;</span><br><span class="line">                &#125;).verify(body)</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="keyword">return</span> RestResponse.bad(-<span class="number">1</span>, <span class="string">"invalid request body"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String roomId = (String) body.get(<span class="string">"roomId"</span>);</span><br><span class="line">        <span class="keyword">long</span> beginDate = (<span class="keyword">long</span>) body.get(<span class="string">"beginDate"</span>);</span><br><span class="line">        <span class="keyword">long</span> endDate = (<span class="keyword">long</span>) body.get(<span class="string">"endDate"</span>);</span><br><span class="line">        List&lt;Integer&gt; weekDays = (List&lt;Integer&gt;) body.get(<span class="string">"weekDays"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取申请的预约时间段</span></span><br><span class="line">        List&lt;Period&gt; resPeriod = getPeriods(body);</span><br><span class="line">        <span class="comment">//初始化变量</span></span><br><span class="line">        Map&lt;Long, Map&lt;String, List&lt;Period&gt;&gt;&gt; res = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        List&lt;Long&gt; dates = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//单次预约</span></span><br><span class="line">        <span class="keyword">if</span> (beginDate == endDate) &#123;</span><br><span class="line">            dates.add(beginDate);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//多次预约</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            dates = reservationService.getAllDateBetween(beginDate, endDate, weekDays);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Long date : dates) &#123;</span><br><span class="line">            <span class="comment">//调用service方法获取各种时间段</span></span><br><span class="line">            List&lt;Period&gt; availableTimes = reservationService.getAvailableTimes(date / <span class="number">1000</span>, roomId);</span><br><span class="line">            List&lt;Period&gt; occupyTimes = reservationService.getOccupyTimes(date / <span class="number">1000</span>, roomId);</span><br><span class="line">            TimeUtil.convertToMS(availableTimes);</span><br><span class="line">            TimeUtil.convertToMS(occupyTimes);</span><br><span class="line">            List&lt;Period&gt; conflictTimes = reservationService.getConflictTimes(resPeriod, occupyTimes);</span><br><span class="line"></span><br><span class="line">            Map&lt;String, List&lt;Period&gt;&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            map.put(<span class="string">"avail"</span>, availableTimes);<span class="comment">//可用</span></span><br><span class="line">            map.put(<span class="string">"occupy"</span>, occupyTimes);<span class="comment">//占用</span></span><br><span class="line">            map.put(<span class="string">"conflict"</span>, conflictTimes);<span class="comment">//冲突</span></span><br><span class="line">            res.put(date, map);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> RestResponse.good(res);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取某房间当天占用时间</span></span><br><span class="line"><span class="comment"> * date:ms级13位</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Period&gt; <span class="title">getOccupyTimes</span><span class="params">(<span class="keyword">long</span> date, String roomId)</span> </span>&#123;</span><br><span class="line">    List&lt;Period&gt; occupyTimes = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;String&gt; states = Arrays.asList(Consts.States.PASSED, Consts.States.USING, Consts.States.OVERED);</span><br><span class="line">    <span class="comment">//取得该房间所有状态的预约</span></span><br><span class="line">    List&lt;Reservation&gt; allReservations = reservationRepository.findAllByStateInAndRoomIdEqualsAndIsRemovedFalse(states, roomId);</span><br><span class="line">    <span class="comment">//取出当天预约过滤并加入OccupyTimes</span></span><br><span class="line">    allReservations.forEach(reservation -&gt; &#123;</span><br><span class="line">        List&lt;Period&gt; collect = reservation.getReservationTimes()</span><br><span class="line">                .stream()</span><br><span class="line">                .filter(period -&gt; period.getBeginTime() &gt; date &amp;&amp; period.getEndTime() &lt; date + DateUtils.MILLIS_PER_DAY / <span class="number">1000</span>)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        occupyTimes.addAll(collect);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> occupyTimes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 获取某房间当天冲突时间</span></span><br><span class="line"><span class="comment">  * 比较预约时段和占用时段</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> List&lt;Period&gt; <span class="title">getConflictTimes</span><span class="params">(List&lt;Period&gt; resPeriod, List&lt;Period&gt; occupyTimes)</span> </span>&#123;</span><br><span class="line">     List&lt;Period&gt; conflictTimes = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">     <span class="comment">//冲突情况</span></span><br><span class="line">     <span class="keyword">for</span> (Period a : resPeriod) &#123;</span><br><span class="line">         <span class="keyword">for</span> (Period b : occupyTimes) &#123;</span><br><span class="line">             <span class="keyword">if</span> (a.getBeginTime() &lt; b.getBeginTime() &amp;&amp; a.getEndTime() &lt; b.getEndTime()) &#123;</span><br><span class="line">                 conflictTimes.add(<span class="keyword">new</span> Period(b.getBeginTime(), a.getEndTime()));</span><br><span class="line">             &#125;</span><br><span class="line">             <span class="keyword">if</span> (a.getBeginTime() &lt; b.getBeginTime() &amp;&amp; a.getEndTime() &gt; b.getEndTime()) &#123;</span><br><span class="line">                 conflictTimes.add(<span class="keyword">new</span> Period(b.getBeginTime(), b.getEndTime()));</span><br><span class="line">             &#125;</span><br><span class="line">             <span class="keyword">if</span> (a.getBeginTime() &gt;= b.getBeginTime() &amp;&amp; a.getEndTime() &lt;= b.getEndTime()) &#123;</span><br><span class="line">                 conflictTimes.add(<span class="keyword">new</span> Period(a.getBeginTime(), a.getEndTime()));</span><br><span class="line">             &#125;</span><br><span class="line">             <span class="keyword">if</span> (a.getBeginTime() &gt;= b.getBeginTime() &amp;&amp; a.getBeginTime() &lt; b.getEndTime() &amp;&amp; a.getEndTime() &gt; b.getEndTime()) &#123;</span><br><span class="line">                 conflictTimes.add(<span class="keyword">new</span> Period(a.getBeginTime(), b.getEndTime()));</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> conflictTimes;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取俩个时间段之间周几</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> beginDate</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> endDate</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> weekDays</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Long&gt; <span class="title">getAllDateBetween</span><span class="params">(<span class="keyword">long</span> beginDate, <span class="keyword">long</span> endDate, List&lt;Integer&gt; weekDays)</span> </span>&#123;</span><br><span class="line">    List&lt;Long&gt; dates = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer day : weekDays) &#123;</span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        cal.setTimeInMillis(beginDate);</span><br><span class="line">        <span class="keyword">while</span> (cal.getTimeInMillis() &lt; endDate) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((cal.get(Calendar.DAY_OF_WEEK)) == day + <span class="number">1</span>) &#123;</span><br><span class="line">                dates.add(cal.getTimeInMillis());</span><br><span class="line">            &#125;</span><br><span class="line">            cal.add(Calendar.DATE, <span class="number">1</span>);<span class="comment">//DATE=日,往后推一天</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dates;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将s转换为ms 13位时间戳</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> availableTimes</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">convertToMS</span><span class="params">(List&lt;Period&gt; availableTimes)</span> </span>&#123;</span><br><span class="line">    availableTimes.forEach(p -&gt; &#123;</span><br><span class="line">        p.setBeginTime(p.getBeginTime() * <span class="number">1000</span>);</span><br><span class="line">        p.setEndTime(p.getEndTime() * <span class="number">1000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+	  
+	    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:16px;">-----------唉呀妈呀 <i class="fa fa-paw"></i> 一不小心就看完了-----------</div>
+    
+</div>
+	  
+	</div>
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>打赏一个呗</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="YanYunNN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/summary/" rel="tag"><i class="fa fa-tag"></i> summary</a>
+          
+            <a href="/tags/code/" rel="tag"><i class="fa fa-tag"></i> code</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/23/10-23/" rel="next" title="Java Design & Learn Summary in 2019/10">
+                <i class="fa fa-chevron-left"></i> Java Design & Learn Summary in 2019/10
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/pic.jpg" alt="YanYunNN">
+            
+              <p class="site-author-name" itemprop="name">YanYunNN</p>
+              <div class="site-description motion-element" itemprop="description">一个自说自述的地方</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/YanYunNN" title="GitHub &rarr; https://github.com/YanYunNN" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:YanYunNNX@163.com" title="E-Mail &rarr; mailto:YanYunNNX@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/caixin630" title="Weibo &rarr; https://weibo.com/caixin630" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://plus.google.com/YanYunNN" title="Google &rarr; https://plus.google.com/YanYunNN" rel="noopener" target="_blank"><i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#✿SUMMARY"><span class="nav-number">1.</span> <span class="nav-text">✿SUMMARY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#✿FILE-STREAM-CSV"><span class="nav-number">2.</span> <span class="nav-text">✿FILE STREAM/CSV</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSV-INPUT-OUTPUT"><span class="nav-number">2.0.1.</span> <span class="nav-text">CSV INPUT/OUTPUT</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#✿PSY-REBUILD"><span class="nav-number">3.</span> <span class="nav-text">✿PSY REBUILD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RESTRUCT-WX-GETTIME-API"><span class="nav-number">3.0.1.</span> <span class="nav-text">RESTRUCT WX GETTIME API</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+	<div class="bg_content">
+	  <canvas id="canvas"></canvas>
+	</div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YanYunNN</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+	
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+  <script src="/js/src/js.cookie.js?v=7.0.1"></script>
+  <script src="/js/src/scroll-cookie.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+  
+  <script>
+  (function() {
+    var appid = 'cyu8GEB4x';
+    var conf = 'b882d2ccd96733fd82df7098045229e4';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    }
+    else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  })();
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "default";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+<script type="text/javascript" src="/js/src/dynamic_bg.js"></script>
+</html>
