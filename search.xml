@@ -116,8 +116,8 @@
         <category>考研</category>
       </categories>
       <tags>
-        <tag>复试</tag>
         <tag>英语</tag>
+        <tag>复试</tag>
       </tags>
   </entry>
   <entry>
@@ -128,8 +128,8 @@
         <category>音乐</category>
       </categories>
       <tags>
-        <tag>英语</tag>
         <tag>鸡汤</tag>
+        <tag>英语</tag>
       </tags>
   </entry>
   <entry>
@@ -166,8 +166,8 @@
         <category>算法</category>
       </categories>
       <tags>
-        <tag>数据结构</tag>
         <tag>ACM</tag>
+        <tag>数据结构</tag>
         <tag>C++</tag>
       </tags>
   </entry>
@@ -179,8 +179,8 @@
         <category>面经</category>
       </categories>
       <tags>
-        <tag>底层</tag>
         <tag>Java</tag>
+        <tag>底层</tag>
         <tag>数据结构</tag>
       </tags>
   </entry>
@@ -192,8 +192,8 @@
         <category>算法</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>ACM</tag>
+        <tag>Java</tag>
         <tag>greedy</tag>
       </tags>
   </entry>
