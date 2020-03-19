@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[JAVA面经 2020/03]]></title>
+    <url>%2F2020%2F03%2F19%2F2020-03-19%2F</url>
+    <content type="text"><![CDATA[华为面试✿SUMMARY华为面试（from xiachuan） 一面：1.自我介绍2.手撕代码：给定一个字符串“MyNameIsTom”每个单词都是大写字母开头，只有大写字母和小写字母。实现每个字母的逆序输出，即“yMemaNsImoT” 学校有哪些专业课程，成绩如何 操作系统中的内存管理，堆和栈的区别 用什么语言，C,C++接触过没有，说一说指针的概念以及引用的概念，四大引用 项目上一些难点，如何解决，有没有没有解决的难点 数据结构了解哪些，数组/链表/二叉树/图 Linux有了解，说一下什么指令能看到操作系统的磁盘使用情况 二面： 上来手撕代码：给定一个链表与一个整型数k，将链表拆分为k等分，尽可能均匀，子链表的长度差不超过1.2．计算机网络了解多少，OSI七层模型说一下，FTP协议属于哪一层，TCP属于哪一层，IP属于哪一层3.TCP和UDP有什么区别4.网关的概念，内网主机如何访问公网主机，基本原理5.数据结构了解多少，数组/链表/栈/队列/二叉树/图6.图的广度优先遍历和深度优先遍历说一下，有什么区别，算法上的区别，除了实现区别之外呢7.使用什么语言，JAVA么，对更换语言有什么看法 业务主管面：1.自我介绍2.实习期间遇到的困难，如何解决的3.为何要在上家公司离职4.说说对华为的了解，对部门的了解5.谈谈华为的企业文化6.家庭情况，工作地的意向，父母对你来华为的看法7.C语言中结构体和联合体的区别8.Dfs和bfs大致讲解以下，有什么区别9.对加班的看法，能够接受的工作强度10.还有什么想问的]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>interview</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Java Design & Learn Summary in 2020/02]]></title>
     <url>%2F2020%2F03%2F09%2F2020-02-09%2F</url>
     <content type="text"><![CDATA[#Java Design &amp; Learn Summary in 2020/02 ✿SUMMARY This month,I major in android server building; KEYWORD: JWT ANDROID AIDL GREENDAO WAITING… ✿FITS-HAOYUE-APILAMBDA处理12345678910111213141516171819202122232425262728/** * 获取过去一周每天锻炼时长 * @param page * @param size * @param principal * @return */ @GetMapping("/citizen/statistics") public RestResponse&lt;?&gt; citizenGetAccessStatistics(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size, Principal principal) &#123; User user = getUserDetailsByPrincipal(principal); if (user == null) &#123; return PagingRestResponse.result(-1, "login is required!", null); &#125; Paging&lt;List&lt;AccessRecord&gt;&gt; paging = accessRecordService.list(user.getId(), page, size); if (paging.getCount() == null || paging.getData() == null) &#123; return PagingRestResponse.result(-2, "query failed", null); &#125; //统计过去7天锻炼时长 List&lt;Map&lt;String, Long&gt;&gt; statistics = accessRecordService.getStatistics(paging.getData()); statistics.sort(new Comparator&lt;Map&lt;String, Long&gt;&gt;() &#123; @Override public int compare(Map&lt;String, Long&gt; m1, Map&lt;String, Long&gt; m2) &#123; return (int) (m1.get("date") - m2.get("date")); &#125; &#125;); return RestResponse.good(statistics); &#125; 填坑式对日期数据累加处理123456789101112131415161718192021222324252627282930313233343536373839/** * 统计过去7天锻炼时长 * @param accessRecords * @return */ @Override public List&lt;Map&lt;String, Long&gt;&gt; getStatistics(List&lt;AccessRecord&gt; accessRecords) &#123; long seven_day_start = LocalDateTime.of(LocalDate.now().plusDays(-6), LocalTime.MIN).toInstant(ZoneOffset.of("+8")).toEpochMilli(); //初始化 List&lt;Map&lt;String, Long&gt;&gt; statistics = new ArrayList&lt;&gt;(); for (int i = 0; i &lt; 7; i++) &#123; Map&lt;String, Long&gt; map = new HashMap&lt;&gt;(); long date = seven_day_start + i * DateUtils.MILLIS_PER_DAY; map.put("date", date); map.put("time", 0L); statistics.add(map); &#125; //累加 accessRecords.forEach(a -&gt; &#123; //将取得一条数据转换时间戳 LocalDate localDate = Instant.ofEpochMilli(a.getRecordTime()).atZone(ZoneOffset.ofHours(8)).toLocalDate(); long formatDate = LocalDateTime.of(localDate, LocalTime.MIN).toInstant(ZoneOffset.of("+8")).toEpochMilli(); //统计每段时间时长 long spendTime; if (a.getState().equals("已离场")) &#123; spendTime = a.getLeaveTime() - a.getEnterTime(); &#125; else &#123; spendTime = System.currentTimeMillis() - a.getEnterTime(); &#125; //找到数组对应日期,对time值累加 statistics.forEach(s -&gt; &#123; if (formatDate == s.get("date")) &#123; long time = s.get("time") + spendTime; s.put("time", time); &#125; &#125;); &#125;); return statistics; &#125; ANDROID的内容 略 ✿OLINGO——ODATA协议API/getTIMEhttp://olingo.apache.org/doc/odata4/index.html https://services.odata.org/V3/OData/OData.svc/ ✿JWT+SECURITY待续where 1=1 或者 where 1&lt;&gt;1是在什么时候用? 后续完善]]></content>
@@ -167,8 +179,8 @@
       </categories>
       <tags>
         <tag>ACM</tag>
-        <tag>数据结构</tag>
         <tag>C++</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -180,8 +192,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>底层</tag>
         <tag>数据结构</tag>
+        <tag>底层</tag>
       </tags>
   </entry>
   <entry>
